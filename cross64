@@ -1,0 +1,31 @@
+#!/bin/sh
+
+rust=$2
+tools=$3
+: ${rust:="$HOME/pi-rust"}
+: ${tools:="$HOME/pi-tools"}
+
+export SYSROOT="$tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/arm-bcm2708hardfp-linux-gnueabi/sysroot"
+
+#Point rustc to the standard libraries
+export LD_LIBRARY_PATH="$rust/lib":$LD_LIBRARY_PATH
+
+#Include the cross copilation binaries
+export PATH="$rust/bin":"$tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin":$PATH
+
+if [ "$1" != "doc" ]
+then
+	#Set up our tools for anyting using these variables
+	export CC="$tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/gcc-sysroot"
+	export AR="$tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-ar"
+
+	#Set target triple
+	flags="--target=arm-unknown-linux-gnueabihf"
+fi
+
+if [ "$1" != "-v" ]
+then
+	cargo $1 $flags
+else
+	rustc -vV
+fi
