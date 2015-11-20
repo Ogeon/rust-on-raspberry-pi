@@ -34,7 +34,8 @@ git clone https://github.com/raspberrypi/tools.git ~/pi-tools
 
 The next step is to compile the Rust compiler and standard libraries. The
 standard libraries are particularly important, since they have to be compiled
-for the ARM platform to make them usable in your program.
+for the ARM platform to make them usable in your program. See Appendix A
+for information on how to add more libraries.
 
 start by cloning the Rust repository and `cd` into it:
 
@@ -124,7 +125,8 @@ built for ARM. There is currently no good way to tell Cargo to tell `rustc` to
 tell `gcc` to tell `ld` to look somewhere else, so we have to do it for them.
 
 The Raspberry Pi toolchain contains a directory with various system
-directories filled with common libraries. This is where we want `ld` to look
+directories filled with common libraries (if you want to add more libraries,
+see Appendix A). This is where we want `ld` to look
 for things, so we are going to use a simple script to tell `gcc` to tell it
 where this directory can be found. Create a file in the binary directory you
 added to your `$PATH` before
@@ -194,3 +196,46 @@ That's it! You should now be ready to cross compile your Raspberry Pi
 projects.
 
 Have fun!
+
+
+# Appendix A: Extending the toolset to support more system dependencies
+
+Let's say your project uses some crate that depends on having openssl
+installed on the system. In this case you have to install the package
+manually into the ARM toolset.
+
+Get these packages either from the raspberry, or download them online.
+
+We'll assume that you're running Raspbian (i.e. deb files), but it should be
+straight forward to adapt the steps to your dist/packages.
+
+If you do `apt-cache show libssl1.0.0` on the raspberry, you'll see this in the
+output:
+
+    Filename:    pool/main/o/openssl/libssl1.0.0_1.0.1e-2+rvt+deb7u17_armhf.deb
+
+You should be able to find a match for that under ftp.debian.org/debian/pool, so
+the resulting URL in this case is
+
+    http://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.0.1e-2+deb7u17_armhf.deb
+
+If it's not there, see if it is still on the raspberry under
+`/var/cache/apt/archive`.
+
+If you still can't find it, try searching for the filename online.
+
+When you have the dependencies downloaded, extract them into the ARM toolchain:
+
+    # cd into the sysroot of the arm toolchain
+    cd ~/pi-tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/arm-bcm2708hardfp-linux-gnueabi/sysroot/
+
+    # move the deb files here and use `ar` to extract the contents:
+    ar p libssl1.0.0_1.0.1e-2+rvt+deb7u17_armhf.deb data.tar.gz | tar zx
+
+    # Repeat for any other dependencies you may have..
+    ar p libssl-dev_1.0.1e-2+rvt+deb7u17_armhf.deb data.tar.gz | tar zx
+    ar p zlib1g_1.2.7.dfsg-13_armhf.deb data.tar.gz | tar zx
+    ar p zlib1g-dev_1.2.7.dfsg-13_armhf.deb data.tar.gz | tar zx
+
+Now you're ready to build the project.
+
