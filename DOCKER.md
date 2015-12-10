@@ -1,18 +1,45 @@
-# Cross compiling with Docker
-The manual process sets lots of environment variables and writes to various config files and thus kind of pollutes your workstation. Thus it can be difficult to remove or upgrade these files and settings or even repeat that process for different versions of rust on the same machine.
+# Cross compiling with `Docker`
+The manual process kind of pollutes your workstation by setting lots of environment variables and writing to various config files. Thus it can be difficult to remove or upgrade these files and settings or even repeat that process for different versions of rust on the same machine.
 
-Thats why you can also use Docker in order not only to ease the process necessary for building your cross compiler but also for your workstation to stay clean. 
+Thats why you can also use `Docker` in order not only to ease the process necessary for building your cross compiler but also for your workstation to stay clean.
 
 Basically the steps for cross compiling your project with the help of docker look like:
-1. Building a docker image which contains the cross compiler
-2. Running a docker container from that image which takes your rust project (and it's platform dependencies) and then cross compiles it
+
+1. Building a `Docker image` which contains the cross compiler
+2. Running a `Docker container` from that `Docker image` which takes your `rust` project (and it's platform dependencies) and then cross compiles it
 
 ## Prerequisites
-* Docker 1.9
+* `Docker` 1.9
+* Optional: Prefetched platform dependencies (e.g. `openssl`)
+
+### Platform dependencies (optional)
+*NOTE*: Only Raspbian `.deb` files are supported currently (but we appreciate patches for other formats)
+
+Let's say your project uses some crate that depends on having openssl
+installed on the system. In this case you have download the correspondig Raspbian `.deb` packages
+into a folder on your host system and then mount this directory into your `docker` container (See section "Cross compiling your project").
+
+Get these packages either from the raspberry, or download them online.
+
+If you do `apt-cache show libssl1.0.0` on the raspberry, you'll see this in the
+output:
+
+    Filename:    pool/main/o/openssl/libssl1.0.0_1.0.1e-2+rvt+deb7u17_armhf.deb
+
+You should be able to find a match for that under ftp.debian.org/debian/pool, so
+the resulting URL in this case is
+
+    http://ftp.debian.org/debian/pool/main/o/openssl/libssl-dev_1.0.1e-2+deb7u17_armhf.deb
+
+If it's not there, see if it is still on the raspberry under
+`/var/cache/apt/archive`.
+
+If you still can't find it, try searching for the filename online.
 
 ## Building the Docker image
 ```
-$ cd docker
+$ git clone https://github.com/Ogeon/rust-on-raspberry-pi.git
+$ cd rust-on-raspberry-pi/docker
 $ docker build \
     --build-arg RUST_GIT_REF=<branch/tag/commit> \ # defaults to "1.4.0" (stable)
     --build-arg PI_TOOLS_GIT_REF=<branch/tag/commit> \ # defaults to "master"
@@ -20,16 +47,17 @@ $ docker build \
     .
 ```
 
-By setting different tags for your Docker image and RUST_GIT_REF you could easily build images for different version of rust and use them as need.
+By setting different tags for your `Docker image` and `RUST_GIT_REF` you could easily build images for different version of rust and use them as need.
 
 ## Cross compiling your project
+If you successfully built the `Docker image` containing the cross compiler, you can finally cross compile your project:
 ```
 $ docker run \
-    --volume <your rust project directory>:/home/cross/project \
-    --volume <.deb dependency dir>:/home/cross/deb-deps \ # e.g openssl
+    --volume <path to your rust project directory>:/home/cross/project \
+    --volume <path to directory containing the platform dependencies>:/home/cross/deb-deps \ # optional, see section "Platform dependencies"
     <tag of your previously built docker image> \ # e.g. "rust-nightly-pi-cross"
     <cargo command> # e.g. "build --release"
 ```
 
-The compiled project can then be found in your target directory .
+The compiled project can then be found in your `target` directory.
 
