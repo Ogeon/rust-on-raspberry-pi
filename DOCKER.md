@@ -1,7 +1,7 @@
 # Cross compiling with `Docker`
-The manual process kind of pollutes your workstation by setting lots of environment variables and writing to various config files. Thus it can be difficult to remove or upgrade these files and settings or even repeat that process for different versions of rust on the same machine.
+The manual process sets some environment variables and writes to config files on your host machine. Thus it can be difficult to remember these changes when you want to remove or upgrade the cross compiler or even repeat that process for different versions of rust on the same machine.
 
-Thats why you can also use `Docker` in order not only to ease the process necessary for building your cross compiler but also for your workstation to stay clean.
+Thats why you can also use `Docker` in order not only to ease the process necessary for building your cross compiler but also for your workstation to stay as it is and keep all changes necessary for the cross compiler to work inside an isolated container.
 
 Basically the steps for cross compiling your project with the help of docker look like:
 
