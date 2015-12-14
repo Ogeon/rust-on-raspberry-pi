@@ -1,7 +1,7 @@
 FROM debian:jessie
 
 ARG PI_TOOLS_GIT_REF=master
-ARG RUST_GIT_REF=1.4.0
+ARG RUST_GIT_REF
 
 # install debian dependencies before we lose root privileges
 RUN apt-get update \
@@ -27,9 +27,11 @@ git reset --hard $PI_TOOLS_GIT_REF;
 COPY bin/gcc-sysroot $HOME/pi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/gcc-sysroot
 COPY bin/gcc-sysroot $HOME/pi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/gcc-sysroot
 
-# install rust
+# install rust (default release: latest stable)
 RUN git clone $URL_GIT_RUST $HOME/rust; \
 cd $HOME/rust; \
+DEFAULT_RUST_GIT_REF=$(git tag --list | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$" | sort -V | tail --lines 1); \
+RUST_GIT_REF=${RUST_GIT_REF:-$DEFAULT_RUST_GIT_REF}; \
 git reset --hard $RUST_GIT_REF; \
 
 export TOOLCHAIN=$TOOLCHAIN_32 && [ $(uname -m) = 'x86_64' ] && export TOOLCHAIN=$TOOLCHAIN_64; \
