@@ -41,7 +41,7 @@ If you still can't find it, try searching for the filename online.
 $ git clone https://github.com/Ogeon/rust-on-raspberry-pi.git
 $ cd rust-on-raspberry-pi/docker
 $ docker build \
-    --build-arg RUST_GIT_REF=<branch/tag/commit> \ # defaults to "1.4.0" (stable)
+    --build-arg RUST_GIT_REF=<branch/tag/commit> \ # defaults to latest stable
     --build-arg PI_TOOLS_GIT_REF=<branch/tag/commit> \ # defaults to "master"
     --tag <tag for your docker image> \ # e.g. "rust-nightly-pi-cross"
     .
