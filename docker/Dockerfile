@@ -8,8 +8,12 @@ RUN apt-get update \
 && apt-get install -y git build-essential file wget python libjemalloc1 llvm;
 
 # create & get cross user and drop root privileges
+#
+# On OS X, the user needs to have uid set to 1000
+# in order to access files from the shared volumes.
+# https://medium.com/@brentkearney/docker-on-mac-os-x-9793ac024e94
 RUN groupadd --system cross \
-&& useradd --create-home --system --gid cross cross;
+&& useradd --create-home --system --gid cross --uid 1000 cross;
 USER cross
 ENV HOME=/home/cross \
 URL_GIT_RUST=https://github.com/rust-lang/rust.git \
