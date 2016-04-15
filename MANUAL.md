@@ -135,7 +135,7 @@ arm-linux-gnueabihf-gcc --sysroot=$HOME/pi-tools/arm-bcm2708/arm-bcm2708hardfp-l
 ```
 
 This is basically an alias for `arm-linux-gnueabihf-gcc`, but with the
-`--sysroot` set to where the libraries are kept. The `"$@" part is there to
+`--sysroot` set to where the libraries are kept. The `"$@"` part is there to
 pass all the incoming argument forwards to `arm-linux-gnueabihf-gcc`. Alright,
 make the file executable:
 
@@ -149,7 +149,11 @@ or
 chmod +x ~/pi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/gcc-sysroot
 ```
 
-and you should be done! Or, kind of done. There is one thing left.
+If your crate requires building C++ code, then you'll need to create a `g++-sysroot` just
+like `gcc-sysroot`, substituting `arm-linux-gnueabihf-g++` for `arm-linux-gnueabihf-gcc`
+inside.
+
+And you should be done! Or, kind of done. There is one thing left.
 
 ##Running Cargo
 

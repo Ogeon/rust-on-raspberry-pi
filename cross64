@@ -17,6 +17,7 @@ if [ "$1" != "doc" ]
 then
 	#Set up our tools for anyting using these variables
 	export CC="$tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/gcc-sysroot"
+	export CXX="$tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/g++-sysroot"
 	export AR="$tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-ar"
 
 	#Set target triple
