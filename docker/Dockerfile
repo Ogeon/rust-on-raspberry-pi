@@ -4,8 +4,8 @@ ARG PI_TOOLS_GIT_REF=master
 ARG RUST_GIT_REF
 
 # install debian dependencies before we lose root privileges
-RUN apt-get update \
-&& apt-get install -y git build-essential file wget python libjemalloc1 llvm;
+RUN apt-get update --fix-missing \
+&& apt-get install -y libclass-c3-xs-perl git build-essential file wget python libjemalloc1 llvm;
 
 # create & get cross user and drop root privileges
 #
@@ -38,8 +38,8 @@ COPY bin/gcc-sysroot $HOME/pi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-r
 # install rust (default release: latest stable)
 RUN git clone $URL_GIT_RUST $HOME/rust; \
 cd $HOME/rust; \
-DEFAULT_RUST_GIT_REF=$(git tag --list | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$" | sort -V | tail --lines 1); \
-RUST_GIT_REF=${RUST_GIT_REF:-$DEFAULT_RUST_GIT_REF}; \
+#DEFAULT_RUST_GIT_REF=$(git tag --list | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$" | sort -V | tail --lines 1); \
+RUST_GIT_REF=1.9.0; \
 git reset --hard $RUST_GIT_REF; \
 
 export TOOLCHAIN=$TOOLCHAIN_32 && [ $(uname -m) = 'x86_64' ] && export TOOLCHAIN=$TOOLCHAIN_64; \
