@@ -1,3 +1,3 @@
 [target.arm-unknown-linux-gnueabihf]
-ar = "arm-linux-gnueabihf-gcc-ar"
+ar = "arm-linux-gnueabihf-ar"
 linker = "gcc-sysroot"
