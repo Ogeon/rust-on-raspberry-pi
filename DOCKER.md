@@ -41,13 +41,13 @@ If you still can't find it, try searching for the filename online.
 $ git clone https://github.com/Ogeon/rust-on-raspberry-pi.git
 $ cd rust-on-raspberry-pi/docker
 $ docker build \
-    --build-arg RUST_GIT_REF=<branch/tag/commit> \ # defaults to latest stable
     --build-arg PI_TOOLS_GIT_REF=<branch/tag/commit> \ # defaults to "master"
+    --build-arg RUST_VERSION=<rustup version stable/beta/nightly> \ # defaults to "stable"
     --tag <tag for your docker image> \ # e.g. "rust-nightly-pi-cross"
     .
 ```
 
-By setting different tags for your `Docker image` and `RUST_GIT_REF` you could easily build images for different version of rust and use them as need.
+By setting different tags for your `Docker image` and `RUST_VERSION` you could easily build images for different version of rust and use them as need.
 
 ## Cross compiling your project
 If you successfully built the `Docker image` containing the cross compiler, you can finally cross compile your project:
@@ -60,4 +60,3 @@ $ docker run \
 ```
 
 The compiled project can then be found in your `target` directory.
-
