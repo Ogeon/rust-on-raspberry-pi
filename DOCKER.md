@@ -42,11 +42,12 @@ $ git clone https://github.com/Ogeon/rust-on-raspberry-pi.git
 $ cd rust-on-raspberry-pi/docker
 $ docker build \
     --build-arg PI_TOOLS_GIT_REF=<branch/tag/commit> \ # defaults to "master"
+    --build-arg RUST_VERSION=<rustup version stable/beta/nightly> \ # defaults to "stable"
     --tag <tag for your docker image> \ # e.g. "rust-nightly-pi-cross"
     .
 ```
 
-The image is build with the latest rust version that `rustup` provides.
+By setting different tags for your `Docker image` and `RUST_VERSION` you could easily build images for different version of rust and use them as need.
 
 ## Cross compiling your project
 If you successfully built the `Docker image` containing the cross compiler, you can finally cross compile your project:

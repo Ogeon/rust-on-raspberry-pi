@@ -1,6 +1,7 @@
 FROM debian:jessie
 
 ARG PI_TOOLS_GIT_REF=master
+ARG RUST_VERSION=stable
 
 # update system
 RUN apt-get update
@@ -20,7 +21,7 @@ ENV URL_GIT_PI_TOOLS=https://github.com/raspberrypi/tools.git \
 
 # install rustup with raspberry target
 RUN curl https://sh.rustup.rs -sSf > $HOME/install_rustup.sh
-RUN sh $HOME/install_rustup.sh -y
+RUN sh $HOME/install_rustup.sh -y --default-toolchain $RUST_VERSION
 RUN $HOME/.cargo/bin/rustup target add arm-unknown-linux-gnueabihf
 
 # install pi tools
