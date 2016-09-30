@@ -1,2 +1,0 @@
-#!/bin/bash
-arm-linux-gnueabihf-gcc --sysroot=$HOME/pi-tools/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi/arm-bcm2708hardfp-linux-gnueabi/sysroot "$@"
