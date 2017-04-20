@@ -14,7 +14,7 @@ your project.
 These instructions are based on [the rusty-pi guide](https://github.com/npryce/rusty-pi/blob/master/doc/compile-the-compiler.asciidoc),
 but with some additions and adaptations for the current build systems.
 
-##Preparing the Tools
+## Preparing the Tools
 
 The first step is to download the Raspberry Pi toolchain. It's a collection of
 binaries and libraries for cross compiling. Begin by installing `git` if it's
@@ -33,7 +33,7 @@ and procede by cloning the toolchain repository:
 git clone https://github.com/raspberrypi/tools.git ~/pi-tools
 ```
 
-##Compiling the Compiler
+## Compiling the Compiler
 
 The next step is to compile the Rust compiler and standard libraries. The
 standard libraries are particularly important, since they have to be compiled
@@ -97,7 +97,7 @@ waiting.
 
 Is it done? Great! Now, move on to the next part.
 
-##Pointing Cargo in the Right Direction
+## Pointing Cargo in the Right Direction
 
 We are almost ready to actually build things. You may actually be able to use
 `rustc` directly, but we want more, right? We want the convenience of Cargo!
@@ -166,7 +166,7 @@ inside.
 
 And you should be done! Or, kind of done. There is one thing left.
 
-##Running Cargo
+## Running Cargo
 
 It would be nice to just be able to run `cargo build` and be done with it, but
 the reality is not exactly that nice. Almost, but not exactly. You will have
